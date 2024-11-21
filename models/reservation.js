@@ -40,32 +40,18 @@ class Reservation {
   }
 
   async save() {
-    const results = await db.query(`INSERT INTO reservations (customer_id, start_at, num_guests, notes) VALUES ($1, $2, $3, $4) RETURNING customer_id, start_at, num_guests, notes`, [this.customerId, this.startAt, this.numGuests, this.notes])
-
-    return results.rows[0]
+    
+      const results = await db.query(
+        `INSERT INTO reservations (customer_id, start_at, num_guests, notes)
+         VALUES ($1, $2, $3, $4)
+         RETURNING customer_id, start_at, num_guests, notes`,
+        [this.customerId, this.startAt, this.numGuests, this.notes]
+      );
+      return results.rows[0];
   }
+  
 }
 
-// router.post("/:id/add-reservation/", async function(req, res, next) {
-//   try {
-//     const customerId = req.params.id;
-//     const startAt = new Date(req.body.startAt);
-//     const numGuests = req.body.numGuests;
-//     const notes = req.body.notes;
-
-//     const reservation = new Reservation({
-//       customerId,
-//       startAt,
-//       numGuests,
-//       notes
-//     });
-//     await reservation.save();
-
-//     return res.redirect(`/${customerId}/`);
-//   } catch (err) {
-//     return next(err);
-//   }
-// });
 
 
 module.exports = Reservation;
